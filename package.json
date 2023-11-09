@@ -4,7 +4,9 @@
   "description": "This project is an application to read to read online novel and sale .",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +17,7 @@
     "express": "^4.18.2",
     "http-status-codes": "^2.3.0",
     "mongoose": "^8.0.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "validator": "^13.11.0"
   }
 }
