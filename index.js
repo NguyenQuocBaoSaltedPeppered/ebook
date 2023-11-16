@@ -24,7 +24,9 @@ app.use((req, res, next) => {
 
 //routes
 app.use("/api/accounts", accountRoutes);
-
+app.get("/", (req, res) =>
+    res.send("Hello, this is ebook app!")
+);
 //connect database
 mongoose.connect(process.env.MONGO_URL)
     .then(() => {
