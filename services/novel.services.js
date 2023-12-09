@@ -5,6 +5,8 @@ const Review = require("../models/review.model");
 const Bookmark = require("../models/bookmark.model");
 const mongoose = require("mongoose");
 const utility = require("./utility.services");
+const unorm = require('unorm');
+
 
 const novelService = {
   //new Novel
@@ -171,15 +173,21 @@ const novelService = {
       console.log(error);
     }
   },
+  
 
   searchNovel: async (searchName) => {
     try {
-      const searchResult = await Novel.find({ title: { $regex: searchName } });
+      const regex = new RegExp(unorm.nfc(searchName), 'i');
+      const searchResult = await Novel.find(
+        { title: { $regex: regex } }
+      ).collation({ locale: 'vi', strength: 2 });
+  
       return searchResult;
     } catch (error) {
       console.log(error);
     }
-  },
+  }
+  
 };
 
 module.exports = novelService;

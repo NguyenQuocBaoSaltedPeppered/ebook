@@ -42,11 +42,11 @@ app.get("/", (req, res) =>
     res.send("Hello, this is ebook app!")
 );
 //connect database
-mongoose.connect(process.env.MONGO_URL)
+mongoose.connect('mongodb+srv://ebookDatabaseTest:jeqATdjuTKMI3Yal@ebook.nw4b7n3.mongodb.net/')
     .then(() => {
         // listen for requests
-        app.listen(process.env.PORT, () => {
-        console.log("connected to db & listening on port", process.env.PORT);
+        app.listen('4096', () => {
+        console.log("connected to db & listening on port", '4096');
         });
     })
     .catch((error) => {
