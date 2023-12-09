@@ -127,48 +127,8 @@ const novelService = {
         { novelId: novelId },
         { _id: 1, title: 1, content: 1, createdAt: 1 }
       );
-      // const reviewList = await Review.aggregate([
-      //   {
-      //     $match: {
-      //       novelId: utility.castId(novelId),
-      //     },
-      //   },
-      //   {
-      //     $sort: {
-      //       createdAt: -1,
-      //     },
-      //   },
-      //   {
-      //     $lookup: {
-      //       from: "accounts",
-      //       localField: "accountId",
-      //       foreignField: "_id",
-      //       as: "accountInfo",
-      //     },
-      //   },
-      //   {
-      //     $unwind: {
-      //       path: "$accountInfo",
-      //     },
-      //   },
-      //   {
-      //     $project: {
-      //       _id: 1,
-      //       noiDungCotTruyen: 1,
-      //       boCucTheGioi: 1,
-      //       tinhCachNhanVat: 1,
-      //       content: 1,
-      //       "accountInfo._id": 1,
-      //       "accountInfo.name": 1,
-      //     },
-      //   },
-      // ]);
-      // const reviewCount = reviewList.length;
       const bookmarkCount = await Bookmark.find({ novelId: novelId }).count();
-      return { novelInfo, chapterList,
-        reviewList, reviewCount,
-        bookmarkCount
-      };
+      return { novelInfo, chapterList, bookmarkCount };
     } catch (error) {
       console.log(error);
     }

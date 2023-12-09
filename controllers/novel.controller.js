@@ -50,13 +50,11 @@ const novelController = {
   get1Novel: async (req, res) => {
     const novelId = req.params.novelId;
     try {
-      const { novelInfo, chapterList, reviewList, reviewCount, bookmarkCount } =
+      const { novelInfo, chapterList, bookmarkCount } =
         await novelService.get1Novel(novelId);
       res.status(StatusCodes.OK).json({
         novelInfo,
         chapterList,
-        reviewList,
-        reviewCount,
         bookmarkCount,
       });
     } catch (error) {
