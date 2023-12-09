@@ -1,4 +1,5 @@
 const rankingServices = require("../services/ranking.services");
+const novelServices =require("../services/novel.services");
 const { StatusCodes } = require("http-status-codes");
 const rankingController = {
   readCountSort: async (req, res) => {
@@ -9,5 +10,13 @@ const rankingController = {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Something wrong!");
     }
   },
+  reviewSort: async (req, res) =>{
+    try {
+      const mostReviewedNovels = await rankingServices.reviewSort();
+      res.status(StatusCodes.OK).json(mostReviewedNovels);
+    } catch (error) {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Something wrong!");
+    }
+  }
 };
 module.exports = rankingController;
