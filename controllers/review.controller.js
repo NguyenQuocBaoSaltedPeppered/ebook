@@ -24,5 +24,20 @@ const reviewController = {
       res.status(error.code).json({ error: error.message });
     }
   },
+  getReviewOfANovel: async (req, res) => {
+    const { novelId } = req.params;
+    console.log(novelId);
+    const { currentPage = 1, pageSize = 10 } = req.query;
+    try {
+      const reviewInfo = await reviewService.getReviewOfANovel(
+        novelId,
+        parseInt(currentPage),
+        parseInt(pageSize)
+      );
+      res.status(StatusCodes.OK).json({ reviewInfo });
+    } catch (error) {
+      res.status(error.code).json({ error: error.message });
+    }
+  }
 };
 module.exports = reviewController;
