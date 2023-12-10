@@ -3,7 +3,7 @@ const Review =require("../models/review.model");
 
 const rankingServices = {
   readCountSort: async () => {
-    const ranking = await Novel.find().sort({ readCount: -1 });
+    const ranking = await Novel.find().sort({ readCount: -1 }).limit(5);
     return ranking;
   },
   reviewSort: async () => {
@@ -19,16 +19,12 @@ const rankingServices = {
           $sort: { totalReviews: -1 },
         },
       ]);
-      const novelIds = mostReviewedNovels.map((item) => item._id);
+      const novelIds = mostReviewedNovels.slice(0,5).map((item) => item._id);
       const novelList=[];
       for (const id of novelIds) {
-
         const novel = await Novel.findOne({_id: id});
-      
-        if (novel) {
-      
+        if (novel) {     
           novelList.push(novel);
-      
         }
       
       }

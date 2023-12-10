@@ -137,10 +137,10 @@ const novelService = {
 
   searchNovel: async (searchName) => {
     try {
-      const regex = new RegExp(unorm.nfc(searchName), 'i');
+      const regex = new RegExp(unorm.nfc(searchName).split('').join('.*'), 'i');
       const searchResult = await Novel.find(
         { title: { $regex: regex } }
-      ).collation({ locale: 'vi', strength: 2 });
+      ).collation({ locale: 'vi', strength: 2});
   
       return searchResult;
     } catch (error) {
