@@ -3,12 +3,47 @@ const Review =require("../models/review.model");
 
 const rankingServices = {
   readCountSort: async () => {
-    const novel = await Novel.find().sort({ readCount: -1 }).limit(5);
-    const ranking = novel.map((novel, index) => ({...novel.toObject(),
-        top: index + 1,
-    }));
-    return ranking;
-  },
+    try {
+      const novels = await Novel.find().sort({ readCount: -1 }).limit(5);
+  
+      const novelIds = novels.map((novel) => novel._id);
+  
+      const novelList = await Promise.all(
+        novelIds.map(async (id, index) => {
+          const reviews = await Review.find({ novelId: id });
+          const totalReviews = reviews.length;
+          const finalAverageRating =
+            totalReviews > 0
+              ? reviews.reduce(
+                  (sum, review) =>
+                    sum +
+                    (review.noiDungCotTruyen + review.boCucTheGioi + review.tinhCachNhanVat) * 5 / 24,
+                  0
+                ) / totalReviews
+              : 0;
+  
+          const novel = novels.find((novel) => novel._id.equals(id));
+  
+          if (novel) {
+            return {
+              ...novel.toObject(),
+              top: index + 1,
+              averageRating: parseFloat(finalAverageRating.toFixed(1)),
+            };
+          }
+  
+          return null;
+        })
+      );
+  
+      // Sắp xếp novelList theo readCount giảm dần
+      novelList.sort((a, b) => b.readCount - a.readCount);
+  
+      return novelList;
+    } catch (error) {
+      throw error;
+    }
+  },  
   reviewSort: async () => {
     try {
       const mostReviewedNovels = await Review.aggregate([
@@ -83,7 +118,7 @@ const rankingServices = {
               ...novel.toObject(),
               top: index + 1,
               totalReviews,
-              averageRating: parseFloat(finalAverageRating.toFixed(2)),
+              averageRating: parseFloat(finalAverageRating.toFixed(1)),
             };
           }
           return null;
