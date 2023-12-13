@@ -17,6 +17,14 @@ const rankingController = {
     } catch (error) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Something wrong!");
     }
+  },
+  scoreSort: async (req, res) =>{
+    try {
+      const mostScoreNovels = await rankingServices.scoreSort();
+      res.status(StatusCodes.OK).json(mostScoreNovels);
+    } catch (error) {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Something wrong!");
+    }
   }
 };
 module.exports = rankingController;
