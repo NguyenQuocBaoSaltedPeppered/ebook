@@ -55,6 +55,7 @@ const chapterService = {
         { novelId: chapter.novelId, index: chapter.index + 1 },
         { _id: 1 }
       );
+      await Novel.updateOne({ _id: chapter.novelId }, { $inc: { readCount: 1 } });
       const commentList = await Comment.aggregate([
         {
           $match: {
