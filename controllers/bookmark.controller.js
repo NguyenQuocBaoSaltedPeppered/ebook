@@ -12,8 +12,9 @@ const bookmarkController = {
   },
   getBookmark: async (req, res) => {
     const { accountId } = req.params;
+    const { keyword } = req.query;
     try {
-      const bookmarkList = await bookmarkService.getBookmark(accountId);
+      const bookmarkList = await bookmarkService.getBookmark(accountId, keyword);
       res.status(StatusCodes.OK).json({ bookmarkList });
     } catch (error) {
       res.status(error.code).json({ error: error.message });
