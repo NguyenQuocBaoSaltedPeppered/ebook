@@ -128,6 +128,19 @@ const novelService = {
         { _id: 1, title: 1, content: 1, createdAt: 1 }
       );
       const bookmarkCount = await Bookmark.find({ novelId: novelId }).count();
+      const reviews = await Review.find({ novelId: novelId });
+    const totalReviews = reviews.length;
+    const finalAverageRating =
+      totalReviews > 0
+        ? reviews.reduce(
+            (sum, review) =>
+              sum +
+              (review.noiDungCotTruyen + review.boCucTheGioi + review.tinhCachNhanVat) *5 / 24,
+            0
+          ) / totalReviews
+        : 0;
+        novelInfo[0].totalReviews = totalReviews;
+        novelInfo[0].averageRating = parseFloat(finalAverageRating.toFixed(1));
       return { novelInfo, chapterList, bookmarkCount };
     } catch (error) {
       console.log(error);
@@ -137,7 +150,7 @@ const novelService = {
 
   searchNovel: async (searchName) => {
     try {
-      const regex = new RegExp(unorm.nfc(searchName).split('').join('.*'), 'i');
+      const regex = new RegExp(unorm.nfc(searchName), 'i');
       const searchResult = await Novel.find(
         { title: { $regex: regex } }
       ).collation({ locale: 'vi', strength: 2});
