@@ -147,7 +147,7 @@ const novelService = {
 
   searchNovel: async (searchName) => {
     try {
-      const regex = new RegExp(unorm.nfc(searchName), 'i');
+      // const regex = new RegExp(unorm.nfc(searchName), 'i');
       const regex = utility.convertToRegexp(searchName);
       const searchResult = await Novel.find(
         { title: { $regex: regex } }
