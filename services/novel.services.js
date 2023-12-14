@@ -147,11 +147,8 @@ const novelService = {
 
   searchNovel: async (searchName) => {
     try {
-<<<<<<< HEAD
       const regex = new RegExp(unorm.nfc(searchName), 'i');
-=======
       const regex = utility.convertToRegexp(searchName);
->>>>>>> 9346fe4ad23805bda668f422d9c2397bd6d9e870
       const searchResult = await Novel.find(
         { title: { $regex: regex } }
       ).collation({ locale: 'vi', strength: 2});
