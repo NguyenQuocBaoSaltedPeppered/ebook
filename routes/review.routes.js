@@ -7,6 +7,7 @@ const router = express.Router();
 
 //Create 1 new review
 router.post("/", reviewController.newReview);
+
 router.get("/:novelId", reviewController.getReviewOfANovel);
 
 module.exports = router;

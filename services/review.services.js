@@ -108,6 +108,7 @@ const reviewService = {
             content: 1,
             "accountInfo._id": 1,
             "accountInfo.name": 1,
+            "accountInfo.avatarLink": 1,
           },
         },
         {
