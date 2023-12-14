@@ -28,6 +28,15 @@ const accountController = {
             res.status(error.code).json({ error: error.message });
         }
     },
+    updateUsernameAndEmail: async (req, res) => {
+        const { username, email } = req.body;
+        try {
+            const user = await accountService.updateUsernameAndEmail(username, email);
+            res.status(StatusCodes.OK).json({ user });
+        } catch (error) {
+            res.status(error.code).json({ error: error.message });
+        }
+    },
 };
 
 module.exports = accountController;

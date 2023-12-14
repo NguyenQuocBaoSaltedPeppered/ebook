@@ -1,4 +1,5 @@
 const Novel = require("../models/novel.model");
+const Review = require("../models/review.model");
 const Account = require("../models/account.model");
 const Chapter = require("../models/chapter.model");
 const Bookmark = require("../models/bookmark.model");
