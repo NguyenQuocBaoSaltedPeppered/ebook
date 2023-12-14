@@ -45,7 +45,7 @@ const bookmarkService = {
   },
 
   //getLatestNovel
-  getBookmark: async (accountId) => {
+  getBookmark: async (accountId, keyword) => {
     if (!accountId) {
       const error = utility.createError(400, "accountId field must be filled");
       throw error;
@@ -59,6 +59,7 @@ const bookmarkService = {
       const error = utility.createError(404, "Account is not exist");
       throw error;
     }
+    const regex = utility.convertToRegexp(keyword);
     try {
       const bookmarkList = await Bookmark.aggregate([
         {
@@ -77,6 +78,13 @@ const bookmarkService = {
         {
           $unwind: {
             path: "$novelInfo",
+          },
+        },
+        {
+          $match: {
+            "novelInfo.title": {
+              $regex: regex,
+            },
           },
         },
         {
