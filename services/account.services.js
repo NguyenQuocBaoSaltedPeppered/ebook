@@ -1,6 +1,7 @@
 const Account = require("../models/account.model");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
+const mongoose = require("mongoose");
 const utility = require("./utility.services");
 
 const accountService = {
@@ -61,6 +62,76 @@ const accountService = {
 
         return acc;
     },
+    // Update username or email
+    updateUsernameAndEmail: async (accountId, username, email) => {
+        if (!mongoose.Types.ObjectId.isValid(accountId)) {
+            const error = utility.createError(400, "Id is not valid");
+            throw error;
+        }
+        const isAccountExisted = await Account.findById(accountId);
+        if (!isAccountExisted) {
+            const error = utility.createError(404, "Account is not exist");
+            throw error;
+        }
+        if (!username && !email)
+        {
+            const error = utility.createError(400, "All the updated fields is empty");
+            throw error;
+        }
+        if (username)
+        {
+            const isUsername = await Account.findOne({name: username});
+            if (isUsername)
+            {
+                const error = utility.createError(400, "New username is already existed");
+                throw error;
+            }
+            isAccountExisted.name = username;
+        }
+        if (email)
+        {
+            if (!validator.isEmail(email))
+            {
+                const error = utility.createError(400, "Email is not valid");
+                throw error;
+            }
+            else
+            {
+                isAccountExisted.email = email;
+            }
+        }
+        await isAccountExisted.save();
+        return isAccountExisted;
+    },
+    // change password
+    updatePassword: async (accountId, oldPassword, newPassword) => {
+        console.log(accountId, oldPassword, newPassword);
+        if (!mongoose.Types.ObjectId.isValid(accountId)) {
+            const error = utility.createError(400, "Id is not valid");
+            throw error;
+        }
+        if (!oldPassword && !newPassword)
+        {
+            const error = utility.createError(400, "Missing old or new password");
+            throw error;
+        }
+        const isAccountExisted = await Account.findById(accountId);
+        if (!isAccountExisted) {
+            const error = utility.createError(404, "Account is not exist");
+            throw error;
+        }
+        const isPasswordMatch = await bcrypt.compare(oldPassword, isAccountExisted.password);
+        if (!isPasswordMatch) {
+            const error = utility.createError(400, "Old Password is incorrect!");
+            throw error;
+        }
+        // Mã hoá và lưu lại mật khẩu mới
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(newPassword, salt);
+        isAccountExisted.password = hash;
+        await isAccountExisted.save();
+        return isAccountExisted;
+    }
 };
 
 module.exports = accountService;

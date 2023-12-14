@@ -12,8 +12,8 @@ router.post("/login", accountController.loginAccount);
 router.post("/sign-up", accountController.signupAccount);
 
 // update username & email
-router.patch("/update-username-email", accountController.updateUsernameAndEmail);
+router.patch("/:accountId/update-username-email", accountController.updateUsernameAndEmail);
 
 // api change password
-
+router.put("/:accountId/update-password", accountController.updatePassword);
 module.exports = router;

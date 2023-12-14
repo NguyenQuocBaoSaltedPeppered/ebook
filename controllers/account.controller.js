@@ -30,13 +30,24 @@ const accountController = {
     },
     updateUsernameAndEmail: async (req, res) => {
         const { username, email } = req.body;
+        const { accountId } = req.params;
         try {
-            const user = await accountService.updateUsernameAndEmail(username, email);
+            const user = await accountService.updateUsernameAndEmail(accountId, username, email);
             res.status(StatusCodes.OK).json({ user });
         } catch (error) {
             res.status(error.code).json({ error: error.message });
         }
     },
+    updatePassword: async (req, res) => {
+        const { oldPassword, newPassword} = req.body;
+        const { accountId } = req.params;
+        try {
+            const user = await accountService.updatePassword(accountId, oldPassword, newPassword);
+            res.status(StatusCodes.OK).json({ user });
+        } catch (error) {
+            res.status(error.code).json({ error: error.message });
+        }
+    }
 };
 
 module.exports = accountController;
