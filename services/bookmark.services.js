@@ -93,6 +93,7 @@ const bookmarkService = {
             "novelInfo._id": 1,
             "novelInfo.title": 1,
             "novelInfo.intro": 1,
+            "novelInfo.coverLink": 1,
           },
         },
       ]);
