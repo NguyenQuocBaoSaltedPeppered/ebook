@@ -26,7 +26,6 @@ const reviewController = {
   },
   getReviewOfANovel: async (req, res) => {
     const { novelId } = req.params;
-    console.log(novelId);
     const { currentPage = 1, pageSize = 10 } = req.query;
     try {
       const reviewInfo = await reviewService.getReviewOfANovel(

@@ -128,7 +128,7 @@ const novelService = {
       );
       const bookmarkCount = await Bookmark.find({ novelId: novelId }).count();
       const reviews = await Review.find({ novelId: novelId });
-    const totalReviews = reviews.length;
+    const totalReviews = reviews ? reviews.length : 0;
     const finalAverageRating =
       totalReviews > 0
         ? reviews.reduce(

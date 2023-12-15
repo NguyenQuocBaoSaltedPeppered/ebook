@@ -11,7 +11,7 @@ const rankingServices = {
       const novelList = await Promise.all(
         novelIds.map(async (id, index) => {
           const reviews = await Review.find({ novelId: id });
-          const totalReviews = reviews.length;
+          const totalReviews = reviews ? reviews.length : 0;
           const finalAverageRating =
             totalReviews > 0
               ? reviews.reduce(
@@ -101,7 +101,7 @@ const rankingServices = {
       const novelList = await Promise.all(
         novelIds.map(async (id, index) => {
           const reviews = await Review.find({ novelId: id });
-          const totalReviews = reviews.length;
+          const totalReviews = reviews ? reviews.length : 0;
             const finalAverageRating =
             totalReviews > 0
               ? reviews.reduce(
