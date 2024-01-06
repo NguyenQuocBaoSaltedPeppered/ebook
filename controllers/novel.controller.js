@@ -71,5 +71,16 @@ const novelController = {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Something wrong!");
     }
   },
+
+  getNovelsOfUser: async (req, res) => {
+    const accountPostedId = req.params.accountId;
+    console.log(accountPostedId);
+    try {
+      const novelList = await novelService.getNovelsOfUser(accountPostedId);
+      res.status(StatusCodes.OK).json({ novelList });
+    } catch (error) {
+      res.status(error.code).json({ error: error.message });
+    }
+  }
 };
 module.exports = novelController;

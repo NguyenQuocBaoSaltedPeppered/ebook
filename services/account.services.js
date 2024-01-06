@@ -59,8 +59,25 @@ const accountService = {
             const error = utility.createError(400, "Password is incorrect!");
             throw error;
         }
-
         return acc;
+    },
+    userDetail: async (accountId) => {
+        if (!mongoose.Types.ObjectId.isValid(accountId)) {
+            const error = utility.createError(400, "Id is not valid");
+            throw error;
+        }
+        const isAccountExisted = await Account
+            .findOne({ _id: utility.castId(accountId) })
+            .select({
+                "name": 1,
+                "email": 1,
+                "avatarLink": 1,
+            });
+        if (!isAccountExisted) {
+            const error = utility.createError(404, "Account is not exist");
+            throw error;
+        }
+        return isAccountExisted;
     },
     // Update username or email
     updateUsernameAndEmail: async (accountId, username, email) => {

@@ -24,7 +24,16 @@ const accountController = {
         try {
             const user = await accountService.login(email, password);
             res.status(StatusCodes.OK).json({ user });
-            } catch (error) {
+        } catch (error) {
+            res.status(error.code).json({ error: error.message });
+        }
+    },
+    userDetail: async (req, res) => {
+        const accountId = req.params.accountId;
+        try {
+            const userInfo = await accountService.userDetail(accountId);
+            res.status(StatusCodes.OK).json({ userInfo });
+        } catch (error) {
             res.status(error.code).json({ error: error.message });
         }
     },

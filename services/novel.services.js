@@ -153,8 +153,27 @@ const novelService = {
       const searchResult = await Novel.find(
         { title: { $regex: regex } }
       ).collation({ locale: 'vi', strength: 2});
-  
       return searchResult;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  getNovelsOfUser: async (accountPostedId) => {
+    if (!mongoose.Types.ObjectId.isValid(accountPostedId)) {
+      const error = utility.createError(400, "Id is not valid");
+      throw error;
+    }
+    const isAccountExisted = await Account.findOne({ _id: utility.castId(accountPostedId) });
+    if (!isAccountExisted) {
+      const error = utility.createError(404, "Account is not exist");
+      throw error;
+    }
+    try {
+      const novelList = await Novel.find( {accountPostedId: accountPostedId});
+      return novelList;
+      // const novelList = await novelService.getNovelsOfUser(accountPostedId);
+      // res.status(StatusCodes.OK).json({ novelList });
     } catch (error) {
       console.log(error);
     }
