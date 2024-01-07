@@ -14,6 +14,9 @@ router.post("/sign-up", accountController.signupAccount);
 // detail route
 router.get("/:accountId", accountController.userDetail);
 
+// update userInfo
+router.put("/:accountId", accountController.updateUserInfo);
+
 // update username & email
 router.patch("/:accountId/update-username-email", accountController.updateUsernameAndEmail);
 

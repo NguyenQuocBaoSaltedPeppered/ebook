@@ -5,7 +5,6 @@ const accountController = {
     signupAccount: async (req, res) => {
         const { name, email, password, avatarLink, isAdmin } = req.body;
         try {
-            console.log("controller here");
             const user = await accountService.signup(
                 name,
                 email,
@@ -48,11 +47,21 @@ const accountController = {
         }
     },
     updatePassword: async (req, res) => {
-        const { oldPassword, newPassword} = req.body;
+        const { oldPassword, newPassword } = req.body;
         const { accountId } = req.params;
         try {
             const user = await accountService.updatePassword(accountId, oldPassword, newPassword);
             res.status(StatusCodes.OK).json({ user });
+        } catch (error) {
+            res.status(error.code).json({ error: error.message });
+        }
+    },
+    updateUserInfo: async (req, res) => {
+        const { email, name, avatarLink } = req.body;
+        const accountId = req.params.accountId;
+        try {
+            const userInfo = await accountService.updateUserInfo(email, name, avatarLink, accountId);
+            res.status(StatusCodes.OK).json({userInfo});
         } catch (error) {
             res.status(error.code).json({ error: error.message });
         }

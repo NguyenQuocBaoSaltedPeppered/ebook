@@ -7,7 +7,6 @@ const utility = require("./utility.services");
 const accountService = {
     //signup
     signup: async (name, email, password, avatarLink, isAdmin) => {
-        console.log("service here");
         if (!email || !password || !name) {
             const error = utility.createError(400, "All field must be filled");
             throw error;
@@ -118,11 +117,15 @@ const accountService = {
             }
         }
         await isAccountExisted.save();
-        return isAccountExisted;
+        return {
+            _id: isAccountExisted.id,
+            name: isAccountExisted.name,
+            email: isAccountExisted.email,
+            avatarLink: isAccountExisted.avatarLink,
+        };
     },
     // change password
     updatePassword: async (accountId, oldPassword, newPassword) => {
-        console.log(accountId, oldPassword, newPassword);
         if (!mongoose.Types.ObjectId.isValid(accountId)) {
             const error = utility.createError(400, "Id is not valid");
             throw error;
@@ -147,7 +150,43 @@ const accountService = {
         const hash = await bcrypt.hash(newPassword, salt);
         isAccountExisted.password = hash;
         await isAccountExisted.save();
-        return isAccountExisted;
+        return {
+            _id: isAccountExisted.id,
+            name: isAccountExisted.name,
+            email: isAccountExisted.email,
+            avatarLink: isAccountExisted.avatarLink,
+        };
+    },
+    updateUserInfo: async (email, name, avatarLink, accountId) => {
+        if (!mongoose.Types.ObjectId.isValid(accountId)) {
+            const error = utility.createError(400, "Id is not valid");
+            throw error;
+        }
+        const isAccountExisted = await Account.findById(accountId);
+        if (!isAccountExisted) {
+            const error = utility.createError(404, "Account is not exist");
+            throw error;
+        }
+        // email && validator.isEmail (isAccountExisted)
+        if(email && !validator.isEmail(email))
+        {
+            const error = utility.createError(400, "Email is not valid");
+            throw error;
+        }
+        try {
+            email && (isAccountExisted.email = email);
+            name && (isAccountExisted.name = name);
+            avatarLink && (isAccountExisted.avatarLink = avatarLink);
+            await isAccountExisted.save();
+            return {
+                _id: isAccountExisted.id,
+                name: isAccountExisted.name,
+                email: isAccountExisted.email,
+                avatarLink: isAccountExisted.avatarLink,
+            };
+        } catch (error) {
+            console.log(error)
+        }
     }
 };
 

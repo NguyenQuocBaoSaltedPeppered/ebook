@@ -74,7 +74,6 @@ const novelController = {
 
   getNovelsOfUser: async (req, res) => {
     const accountPostedId = req.params.accountId;
-    console.log(accountPostedId);
     try {
       const novelList = await novelService.getNovelsOfUser(accountPostedId);
       res.status(StatusCodes.OK).json({ novelList });
